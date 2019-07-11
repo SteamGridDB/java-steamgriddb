@@ -33,13 +33,28 @@ var gamesJson = Search.searchGamesByNameJSON("cyberpunk");
 #### Get a game object without searching:
 ```java
 // Get a Game using a GameId
-var game = Game.getGameByGameId(1234);
+var game = Game.getGameByGameId("1234");
 
 // Get a Game using a SteamAppId
-var game = Game.getGameBySteamAppId(567890);
+var game = Game.getGameBySteamAppId("567890");
+      
+// Get a Game using an EgsId
+var game = Game.getGameByGogId("OFB-EAST:57557");
+
+// Get a Game using an OriginId
+var game = Game.getGameByOriginId("OFB-EAST:57557");
+
+// Get a Game using an UplayId
+var game = Game.getGameByUplayId("4a1562a4-c4d2-4bc5-a85e-f3db588b0072");
+
+// Get a Game using an GogId
+var game = Game.getGameByGogId("2031519202");
 
 // Get a Game using its constructor
-var game = new Game(567890, SGDBIdTypes.SteamAppId);
+var game = new Game("567890", SGDBIdTypes.SteamAppId);
+
+// Get a JSONObject containing the response from the API
+var gameJson = Search.getGameJSONBySteamAppId("567890");
 ```
 
 #### Do something with a game object:
@@ -54,13 +69,16 @@ var stylesArray = game.getStyles();
 #### Get some grids:
 ```java
 // Get grids by game ID
-var grid = Grid.getGridsByGameId(1234);
+var grid = Grid.getGridsByGameId("1234");
     
 // Get grids by Steam App Id
-var grids = Grid.getGridsBySteamAppId(1234);
+var grids = Grid.getGridsBySteamAppId("1234");
     
 // Alternatively, you can do it like this:
-var grids = Grid.getGridsById(1234, SGDBIdTypes.GameId);
+var grids = Grid.getGridsById("1234", SGDBIdTypes.GameId);
+
+// Get a JSONObject containing the response from the API
+var gridJson = Search.getGridJSONBySteamAppId("567890");
 ```
 
 #### Filter the styles:
@@ -69,11 +87,11 @@ var grids = Grid.getGridsById(1234, SGDBIdTypes.GameId);
 SGDBStyles styles[] = {SGDBStyles.Alternate, SGDBStyles.NoLogo};
 
 // Same as before, but using the styles filter
-var grid = Grid.getGridsByGameId(1234, styles);
+var grid = Grid.getGridsByGameId("1234", styles);
     
-var grids = Grid.getGridsBySteamAppId(1234, styles);
+var grids = Grid.getGridsBySteamAppId("1234", styles);
 
-var grids = Grid.getGridsById(1234, SGDBIdTypes.GameId, styles);
+var grids = Grid.getGridsById("1234", SGDBIdTypes.GameId, styles);
 ```
 
 #### Do something with a grid object:
@@ -89,22 +107,22 @@ var authorName = grids.get(0).getAuthor().getName();
 #### Vote on grids:
 ```java
 // Upvote the first grid of the game with ID 1234
-var grid = Grid.getGridsByGameId(1234).get(0);
+var grid = Grid.getGridsByGameId("1234").get(0);
 grid.upvote();
 
 // Downvote the same grid
-var grid = Grid.getGridsByGameId(1234).get(0);
+var grid = Grid.getGridsByGameId("1234").get(0);
 grid.upvote();
     
 // Alternatively, use the Grid's ID (80 in this case) to vote:
-Grid.upvoteById(80);
-Grid.downvoteById(80);
+Grid.upvoteById("80");
+Grid.downvoteById("80");
 ```
 
 #### Upload a grid:
 ```java
 // Upload a blurred grid to Half-Life 2 (2254)
-Grid.upload(2254, SGDBStyles.Blurred, "path/of/image.img");
+Grid.upload("2254", SGDBStyles.Blurred, "path/of/image.img");
 ```
 
 #### Delete grids:
@@ -113,10 +131,10 @@ Grid.upload(2254, SGDBStyles.Blurred, "path/of/image.img");
 Grid.deleteByGridID(gameID);
 
 // Delete multiple grids by ID
-var gameIDs = {123, 456};
+var gameIDs = {"123", "456"};
 Grid.deleteByGridIDs(gameIDs);
 
 // Delete a Grid object
-var grid = Grid.getGridsByGameId(1234).get(0);
+var grid = Grid.getGridsByGameId("1234").get(0);
 grid.delete();
 ```

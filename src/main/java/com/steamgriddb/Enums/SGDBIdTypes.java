@@ -7,5 +7,9 @@ package com.steamgriddb.Enums;
  */
 public enum SGDBIdTypes {
     SteamAppId,
+    OriginId,
+    EgsId,
+    UplayId,
+    GogId,
     GameId
 }

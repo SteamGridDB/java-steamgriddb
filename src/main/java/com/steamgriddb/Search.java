@@ -35,7 +35,7 @@ public class Search {
             ArrayList<Game> games = new ArrayList<>();
             JSONArray gamesArray = json.getJSONArray("data");
             for (int i = 0; i < gamesArray.length(); i++) {
-                games.add(new Game(gamesArray.getJSONObject(i).getInt("id"), SGDBIdTypes.GameId));
+                games.add(new Game(String.valueOf(gamesArray.getJSONObject(i).getInt("id")), SGDBIdTypes.GameId));
             }
             return games;
         }

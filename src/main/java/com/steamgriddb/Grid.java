@@ -20,8 +20,8 @@ public class Grid {
     /*
     * Fields
      */
-    private int id = -1;
     private double score = -1;
+    private String id = "";
     private String style = "";
     private String url = "";
     private String thumb = "";
@@ -39,7 +39,7 @@ public class Grid {
      * @param tags The Grid's Tags
      * @param author The Grid's Author
      */
-    public Grid(int id, double score, SGDBStyles style, String url, String thumb, ArrayList<String> tags, Author author) {
+    public Grid(String id, double score, SGDBStyles style, String url, String thumb, ArrayList<String> tags, Author author) {
         switch (style) {
             case Alternate: {
                 this.style = "alternate";
@@ -76,15 +76,32 @@ public class Grid {
      * @param styles An array of styles for filtering the results
      * @return An ArrayList of Grid objects
      */
-    public static ArrayList<Grid> getGridsById(int id, SGDBIdTypes idType, SGDBStyles[] styles) {
+    public static ArrayList<Grid> getGridsById(String id, SGDBIdTypes idType, SGDBStyles[] styles) {
         ArrayList<Grid> grids = new ArrayList<>();
         String apiUrl = "";
         String stylesStr = buildStylesString(styles);
 
-        if (idType == SGDBIdTypes.GameId) {
-            apiUrl = "grids/game/";
-        } else if (idType == SGDBIdTypes.SteamAppId) {
-            apiUrl = "grids/steam/";
+        switch (idType) {
+            case GameId:
+                apiUrl = "grids/game/";
+                break;
+            case SteamAppId:
+                apiUrl = "grids/steam/";
+                break;
+            case EgsId:
+                apiUrl = "grids/egs/";
+                break;
+            case UplayId:
+                apiUrl = "grids/uplay/";
+                break;
+            case OriginId:
+                apiUrl = "grids/origin/";
+                break;
+            case GogId:
+                apiUrl = "grids/gog/";
+                break;
+            default:
+                break;
         }
 
         JSONObject json = SGDBConnectionManager.getJSON(apiUrl + id + "?styles=" + stylesStr);
@@ -128,7 +145,7 @@ public class Grid {
                         break;
                 }
 
-                Grid grid = new Grid(jsonGrid.getInt("id"), jsonGrid.getDouble("score"), style,
+                Grid grid = new Grid(String.valueOf(jsonGrid.getInt("id")), jsonGrid.getDouble("score"), style,
                         jsonGrid.getString("url"), jsonGrid.getString("thumb"), tagStrings, authorObject);
                 grids.add(grid);
             }
@@ -144,7 +161,7 @@ public class Grid {
      * @param idType The type of ID (SteamAppID or GameID)
      * @return An ArrayList of Grid objects
      */
-    public static ArrayList<Grid> getGridsById(int id, SGDBIdTypes idType) {
+    public static ArrayList<Grid> getGridsById(String id, SGDBIdTypes idType) {
         ArrayList<Grid> grids = new ArrayList<>();
         grids = getGridsById(id, idType, new SGDBStyles[0]);
         return grids;
@@ -157,7 +174,7 @@ public class Grid {
      * @param styles An array of SGDBStyles for filtering Grids
      * @return An ArrayList of Grid objects
      */
-    public static ArrayList<Grid> getGridsBySteamAppId(int steamAppId, SGDBStyles[] styles) {
+    public static ArrayList<Grid> getGridsBySteamAppId(String steamAppId, SGDBStyles[] styles) {
         ArrayList<Grid> grids = new ArrayList<>();
         grids = getGridsById(steamAppId, SGDBIdTypes.SteamAppId, styles);
         return grids;
@@ -169,9 +186,109 @@ public class Grid {
      * @param steamAppId The SteamAppID of a Game
      * @return An ArrayList of Grid objects
      */
-    public static ArrayList<Grid> getGridsBySteamAppId(int steamAppId) {
+    public static ArrayList<Grid> getGridsBySteamAppId(String steamAppId) {
         ArrayList<Grid> grids = new ArrayList<>();
         grids = getGridsById(steamAppId, SGDBIdTypes.SteamAppId);
+        return grids;
+    }
+
+    /**
+     * Get Grids by OriginId.
+     *
+     * @param originId The OriginId of a Game
+     * @param styles An array of SGDBStyles for filtering Grids
+     * @return An ArrayList of Grid objects
+     */
+    public static ArrayList<Grid> getGridsByOriginId(String originId, SGDBStyles[] styles) {
+        ArrayList<Grid> grids = new ArrayList<>();
+        grids = getGridsById(originId, SGDBIdTypes.OriginId, styles);
+        return grids;
+    }
+
+    /**
+     * Get Grids by OriginId.
+     *
+     * @param originId The OriginId of a Game
+     * @return An ArrayList of Grid objects
+     */
+    public static ArrayList<Grid> getGridsByOriginId(String originId) {
+        ArrayList<Grid> grids = new ArrayList<>();
+        grids = getGridsById(originId, SGDBIdTypes.OriginId);
+        return grids;
+    }
+
+    /**
+     * Get Grids by UplayId.
+     *
+     * @param uplayId The UplayId of a Game
+     * @param styles An array of SGDBStyles for filtering Grids
+     * @return An ArrayList of Grid objects
+     */
+    public static ArrayList<Grid> getGridsByUplayId(String uplayId, SGDBStyles[] styles) {
+        ArrayList<Grid> grids = new ArrayList<>();
+        grids = getGridsById(uplayId, SGDBIdTypes.UplayId, styles);
+        return grids;
+    }
+
+    /**
+     * Get Grids by UplayId.
+     *
+     * @param uplayId The UplayId of a Game
+     * @return An ArrayList of Grid objects
+     */
+    public static ArrayList<Grid> getGridsByUplayId(String uplayId) {
+        ArrayList<Grid> grids = new ArrayList<>();
+        grids = getGridsById(uplayId, SGDBIdTypes.UplayId);
+        return grids;
+    }
+
+    /**
+     * Get Grids by EgsId.
+     *
+     * @param egsId The EgsId of a Game
+     * @param styles An array of SGDBStyles for filtering Grids
+     * @return An ArrayList of Grid objects
+     */
+    public static ArrayList<Grid> getGridsByEgsId(String egsId, SGDBStyles[] styles) {
+        ArrayList<Grid> grids = new ArrayList<>();
+        grids = getGridsById(egsId, SGDBIdTypes.EgsId, styles);
+        return grids;
+    }
+
+    /**
+     * Get Grids by EgsId.
+     *
+     * @param egsId The EgsId of a Game
+     * @return An ArrayList of Grid objects
+     */
+    public static ArrayList<Grid> getGridsByEgsId(String egsId) {
+        ArrayList<Grid> grids = new ArrayList<>();
+        grids = getGridsById(egsId, SGDBIdTypes.EgsId);
+        return grids;
+    }
+
+    /**
+     * Get Grids by GogId.
+     *
+     * @param gogId The GogId of a Game
+     * @param styles An array of SGDBStyles for filtering Grids
+     * @return An ArrayList of Grid objects
+     */
+    public static ArrayList<Grid> getGridsByGogId(String gogId, SGDBStyles[] styles) {
+        ArrayList<Grid> grids = new ArrayList<>();
+        grids = getGridsById(gogId, SGDBIdTypes.GogId, styles);
+        return grids;
+    }
+
+    /**
+     * Get Grids by GogId.
+     *
+     * @param gogId The GogId of a Game
+     * @return An ArrayList of Grid objects
+     */
+    public static ArrayList<Grid> getGridsByGogId(String gogId) {
+        ArrayList<Grid> grids = new ArrayList<>();
+        grids = getGridsById(gogId, SGDBIdTypes.GogId);
         return grids;
     }
 
@@ -182,7 +299,7 @@ public class Grid {
      * @param styles An array of SGDBStyles for filtering Grids
      * @return An ArrayList of Grid objects
      */
-    public static ArrayList<Grid> getGridsByGameId(int gameId, SGDBStyles[] styles) {
+    public static ArrayList<Grid> getGridsByGameId(String gameId, SGDBStyles[] styles) {
         ArrayList<Grid> grids = new ArrayList<>();
         grids = getGridsById(gameId, SGDBIdTypes.GameId, styles);
         return grids;
@@ -194,7 +311,7 @@ public class Grid {
      * @param gameId The GameID of a Game
      * @return An ArrayList of Grid objects
      */
-    public static ArrayList<Grid> getGridsByGameId(int gameId) {
+    public static ArrayList<Grid> getGridsByGameId(String gameId) {
         ArrayList<Grid> grids = new ArrayList<>();
         grids = getGridsById(gameId, SGDBIdTypes.GameId);
         return grids;
@@ -207,7 +324,7 @@ public class Grid {
      * @param styles An array of SGDBStyles for filtering Grids
      * @return A JSONObject object with the Grid data
      */
-    public static JSONObject getGridJSONBySteamAppId(int steamAppId, SGDBStyles[] styles) {
+    public static JSONObject getGridJSONBySteamAppId(String steamAppId, SGDBStyles[] styles) {
         String stylesStr = buildStylesString(styles);
         JSONObject json = SGDBConnectionManager.getJSON("grids/steam/" + steamAppId + "?styles=" + stylesStr);
         return json;
@@ -219,8 +336,104 @@ public class Grid {
      * @param steamAppId A Game's SteamAppId
      * @return A JSONObject object with the Grid data
      */
-    public static JSONObject getGridJSONBySteamAppId(int steamAppId) {
+    public static JSONObject getGridJSONBySteamAppId(String steamAppId) {
         JSONObject json = SGDBConnectionManager.getJSON("grids/steam/" + steamAppId);
+        return json;
+    }
+
+    /**
+     * Get a JSONObject of a Grids array from an OriginId.
+     *
+     * @param originId A Game's OriginId
+     * @param styles An array of SGDBStyles for filtering Grids
+     * @return A JSONObject object with the Grid data
+     */
+    public static JSONObject getGridJSONByOriginId(String originId, SGDBStyles[] styles) {
+        String stylesStr = buildStylesString(styles);
+        JSONObject json = SGDBConnectionManager.getJSON("grids/origin/" + originId + "?styles=" + stylesStr);
+        return json;
+    }
+
+    /**
+     * Get a JSONObject of a Grids array from an OriginId.
+     *
+     * @param originId A Game's OriginId
+     * @return A JSONObject object with the Grid data
+     */
+    public static JSONObject getGridJSONByOriginId(String originId) {
+        JSONObject json = SGDBConnectionManager.getJSON("grids/origin/" + originId);
+        return json;
+    }
+
+    /**
+     * Get a JSONObject of a Grids array from an EgsId.
+     *
+     * @param egsId A Game's EgsId
+     * @param styles An array of SGDBStyles for filtering Grids
+     * @return A JSONObject object with the Grid data
+     */
+    public static JSONObject getGridJSONByEgsId(String egsId, SGDBStyles[] styles) {
+        String stylesStr = buildStylesString(styles);
+        JSONObject json = SGDBConnectionManager.getJSON("grids/egs/" + egsId + "?styles=" + stylesStr);
+        return json;
+    }
+
+    /**
+     * Get a JSONObject of a Grids array from an EgsId(.
+     *
+     * @param egsId A Game's EgsId(
+     * @return A JSONObject object with the Grid data
+     */
+    public static JSONObject getGridJSONByEgsId(String egsId) {
+        JSONObject json = SGDBConnectionManager.getJSON("grids/egs/" + egsId);
+        return json;
+    }
+
+    /**
+     * Get a JSONObject of a Grids array from a UplayId.
+     *
+     * @param uplayId A Game's UplayId
+     * @param styles An array of SGDBStyles for filtering Grids
+     * @return A JSONObject object with the Grid data
+     */
+    public static JSONObject getGridJSONByUplayId(String uplayId, SGDBStyles[] styles) {
+        String stylesStr = buildStylesString(styles);
+        JSONObject json = SGDBConnectionManager.getJSON("grids/uplay/" + uplayId + "?styles=" + stylesStr);
+        return json;
+    }
+
+    /**
+     * Get a JSONObject of a Grids array from a UplayId.
+     *
+     * @param uplayId A Game's UplayId
+     * @return A JSONObject object with the Grid data
+     */
+    public static JSONObject getGridJSONByUplayId(String uplayId) {
+        JSONObject json = SGDBConnectionManager.getJSON("grids/uplay/" + uplayId);
+        return json;
+    }
+
+    /**
+     * Get a JSONObject of a Grids array from a GogId.
+     *
+     * @param gogId A Game's GogId
+     * @param styles An array of SGDBStyles for filtering Grids
+     * @return A JSONObject object with the Grid data
+     */
+    public static JSONObject getGridJSONByGogId(String gogId, SGDBStyles[] styles) {
+        String stylesStr = buildStylesString(styles);
+        JSONObject json = SGDBConnectionManager.getJSON("grids/gog/" + gogId + "?styles=" + stylesStr);
+        return json;
+    }
+
+    /**
+     * Get a JSONObject of a Grids array from a GogId.
+     *
+     * @param gogId A Game's GogId
+     * @return A JSONObject object with the Grid data
+     */
+    public static JSONObject getGridJSONByGogId(String gogId) {
+        JSONObject json = SGDBConnectionManager.getJSON("grids/gog/" + gogId);
         return json;
     }
 
@@ -231,7 +444,7 @@ public class Grid {
      * @param styles An array of SGDBStyles for filtering Grids
      * @return A JSONObject object with the Grid data
      */
-    public static JSONObject getGridJSONByGameId(int gameId, SGDBStyles[] styles) {
+    public static JSONObject getGridJSONByGameId(String gameId, SGDBStyles[] styles) {
         String stylesStr = buildStylesString(styles);
         JSONObject json = SGDBConnectionManager.getJSON("grids/game/" + gameId + "?styles=" + stylesStr);
         return json;
@@ -243,24 +456,24 @@ public class Grid {
      * @param gameId A Game's GameId
      * @return A JSONObject object with the Grid data
      */
-    public static JSONObject getGridJSONByGameId(int gameId) {
+    public static JSONObject getGridJSONByGameId(String gameId) {
         JSONObject json = SGDBConnectionManager.getJSON("grids/game/" + gameId);
         return json;
     }
 
     /**
      * Upload a Grid by entering its required data.
-     * 
+     *
      * @param gameId The GameID of a Game
      * @param style The style of the Grid
      * @param filePath The file path of an image
      * @return True if the upload was successful, false if otherwise
      */
-    public static boolean uploadGrid(int gameId, SGDBStyles style, String filePath) {
+    public static boolean uploadGrid(String gameId, SGDBStyles style, String filePath) {
         File grid = new File(filePath);
-        
+
         String styleStr = "";
-        
+
         switch (style) {
             case Alternate: {
                 styleStr = "alternate";
@@ -286,19 +499,19 @@ public class Grid {
         params.put("game_id", gameId);
         params.put("style", styleStr);
         params.put("grid", grid.toPath());
-        
+
         JSONObject json = SGDBConnectionManager.postMultipart("grids", params);
 
         return json.getBoolean("success");
     }
-    
+
     /**
      * Vote for a Grid using its ID.
      *
      * @param vote The vote's value (True = Upvote, False = Downvote)
      * @param gridID The Grid's ID
      */
-    public static void vote(boolean vote, int gridID) {
+    public static void vote(boolean vote, String gridID) {
         if (vote) {
             upvoteById(gridID);
         } else {
@@ -338,7 +551,7 @@ public class Grid {
      *
      * @param gridId The Grid's ID
      */
-    public static void upvoteById(int gridId) {
+    public static void upvoteById(String gridId) {
         SGDBConnectionManager.post("grids/vote/up/" + gridId);
     }
 
@@ -347,7 +560,7 @@ public class Grid {
      *
      * @param gridId The Grid's ID
      */
-    public static void downvoteById(int gridId) {
+    public static void downvoteById(String gridId) {
         SGDBConnectionManager.post("grids/vote/down/" + gridId);
     }
 
@@ -360,19 +573,19 @@ public class Grid {
 
     /**
      * Delete a Grid using its ID.
-     * 
+     *
      * @param gridId The Grid's ID
      */
-    public static void deleteByGridID(int gridId) {
+    public static void deleteByGridID(String gridId) {
         SGDBConnectionManager.delete("grids/" + gridId);
     }
 
     /**
      * Delete multiple Grids using an array of IDs.
-     * 
+     *
      * @param gridIds The Grid's ID
      */
-    public static void deleteByGridIDs(int[] gridIds) {
+    public static void deleteByGridIDs(String[] gridIds) {
         for (int i = 0; i < gridIds.length; i++) {
             deleteByGridID(gridIds[i]);
         }
@@ -383,7 +596,7 @@ public class Grid {
      *
      * @return The Grid's ID
      */
-    public int getId() {
+    public String getId() {
         return id;
     }
 
@@ -442,7 +655,10 @@ public class Grid {
     }
 
     /**
-     *
+     * Build a string from and SGDBStyles array.
+     * 
+     * @param styles The SGDBStyles array to be converted
+     * @return String containing the given SGDBStyles
      */
     private static String buildStylesString(SGDBStyles[] styles) {
         String stylesStr = "";
@@ -477,5 +693,4 @@ public class Grid {
 
         return stylesStr;
     }
-
 }
