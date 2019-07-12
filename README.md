@@ -39,7 +39,7 @@ var game = Game.getGameByGameId("1234");
 var game = Game.getGameBySteamAppId("567890");
       
 // Get a Game using an EgsId
-var game = Game.getGameByGogId("77f2b98e2cef40c8a7437518bf420e47");
+var game = Game.getGameByEgsId("77f2b98e2cef40c8a7437518bf420e47");
 
 // Get a Game using an OriginId
 var game = Game.getGameByOriginId("OFB-EAST:57557");
