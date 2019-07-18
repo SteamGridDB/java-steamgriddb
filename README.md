@@ -7,7 +7,7 @@ A Java wrapper for SteamGridDB's API
 
 ## Getting Started
 #### Get your API key
-[You can generate an API key on the preferences page.](https://www.steamgriddb.com/profile/preferences)
+[You can generate an API key on your user preferences page.](https://www.steamgriddb.com/profile/preferences)
 
 #### Require the library into your project.
 ```java
@@ -39,7 +39,7 @@ var game = Game.getGameByGameId("1234");
 var game = Game.getGameBySteamAppId("567890");
       
 // Get a Game using an EgsId
-var game = Game.getGameByGogId("OFB-EAST:57557");
+var game = Game.getGameByEgsId("77f2b98e2cef40c8a7437518bf420e47");
 
 // Get a Game using an OriginId
 var game = Game.getGameByOriginId("OFB-EAST:57557");
